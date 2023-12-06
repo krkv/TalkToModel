@@ -142,8 +142,10 @@ def get_predict_func(t5_gin_file: str,
             bot_gin_file = "./configs/compas-config.gin"
         elif t5_params.dataset_name == "german":
             bot_gin_file = "./configs/german-config.gin"
+        elif t5_params.dataset_name == "breastcancer":
+            bot_gin_file = "./configs/breastcancer-config.gin"
         else:
-            known_options = "diabetes, compas, or german"
+            known_options = "diabetes, compas, german or breastcancer"
             message = ("Please provide the gin file for the conversation in bot_gin_file, "
                        f"argument as the dataset {dataset_name} is unknown. Known dataset "
                        f"options are {known_options}.")
