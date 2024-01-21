@@ -22,6 +22,7 @@ from explain.parser import Parser, get_parse_tree
 from explain.prompts import Prompts
 from explain.utils import read_and_format_data
 from explain.write_to_log import log_dialogue_input
+import cloudpickle as pkl
 
 
 app = Flask(__name__)
@@ -31,7 +32,7 @@ app = Flask(__name__)
 def load_sklearn_model(filepath):
     """Loads a sklearn model."""
     with open(filepath, 'rb') as file:
-        model = pickle.load(file)
+        model = pkl.load(file)
     return model
 
 
