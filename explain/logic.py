@@ -14,10 +14,6 @@ import torch
 from flask import Flask
 import gin
 
-from pyGPGOMEA import GPGOMEARegressor as GPG
-import pandas as pd
-from sklearn.metrics import mean_squared_error
-
 from explain.action import run_action
 from explain.conversation import Conversation
 from explain.decoder import Decoder
@@ -211,24 +207,19 @@ class ExplainBot:
         Returns:
             success: whether the model was saved successfully.
         """
-        app.logger.info(f"Loading inference model...")
-        
-        bikes_train = pd.read_csv('data/bikes_train.csv', index_col=0)
-        bikes_test = pd.read_csv('data/bikes_test.csv', index_col=0)
-        y_train = bikes_train.pop('y')
-        y_test = bikes_test.pop('y')
-        X_train_values = bikes_train.values.astype(float)
-        y_train_values = y_train.values.astype(float)
-        X_test_values = bikes_test.values.astype(float)
-        y_test_values = y_test.values.astype(float)
-        model = GPG(gomea=True, silent=False)
-        model.fit(X_train_values, y_train_values)
-        print('Test RMSE:', np.sqrt( mean_squared_error(y_test_values, model.predict(X_test_values)) ))
-        
-        self.conversation.add_var('model', model, 'model')
-        self.conversation.add_var('model_prob_predict',
-                                    model.predict,
-                                    'prediction_function')
+        app.logger.info(f"Loading inference model at path {filepath}...")
+        if filepath.endswith('.pkl'):
+            model = load_sklearn_model(filepath)
+            self.conversation.add_var('model', model, 'model')
+            self.conversation.add_var('model_prob_predict',
+                                      model.predict,
+                                      'prediction_function')
+        else:
+            # No other types of models implemented yet
+            message = (f"Models with file extension {filepath} are not supported."
+                       " You must provide a model stored in a .pkl that can be loaded"
+                       f" and called like an sklearn model.")
+            raise NameError(message)
         app.logger.info("...done")
         return 'success'
 
