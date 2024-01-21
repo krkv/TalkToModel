@@ -18,7 +18,7 @@ def score_operation(conversation, parse_text, i, **kwargs):
 
     data = conversation.temp_dataset.contents['X']
     y_true = conversation.temp_dataset.contents['y']
-    y_pred = model.predict(data.values.astype(float))
+    y_pred = model.predict(data)
 
     filter_string = gen_parse_op_text(conversation)
     if len(filter_string) <= 0:
