@@ -1,0 +1,10 @@
+{
+    "distance_continuous": 0.0006044153511003614,
+    "distance_categorical": 0,
+    "sparsity_cont": 10,
+    "sparsity_cat": 0,
+    "coherence_score": 0.1,
+    "incoherent_features": [],
+    "validity": false,
+    "new_outcome": 1
+}
